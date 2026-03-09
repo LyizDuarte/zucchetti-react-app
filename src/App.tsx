@@ -3,7 +3,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useThemeMode } from './contexts/ThemeContext';
 import { getAppTheme } from './theme/appTheme';
-import { ErrorBoundary } from './components/ErrorBoundary';
+import { ErrorBoundary } from './components/shared/ErrorBoundary';
 import { UsersPage } from './pages/UsersPage';
 
 function App() {

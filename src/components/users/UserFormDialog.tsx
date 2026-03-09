@@ -10,9 +10,9 @@ import {
 } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import type { User } from '../types/User';
-import { useUsers } from '../contexts/UsersContext';
-import { userFormSchema, type UserFormInputs } from '../schemas/userFormSchema';
+import type { User } from '../../types/User';
+import { useUsers } from '../../contexts/UsersContext';
+import { userFormSchema, type UserFormInputs } from '../../schemas/userFormSchema';
 
 type UserFormDialogProps = {
   open: boolean;
@@ -110,4 +110,3 @@ export function UserFormDialog({ open, onClose, user }: UserFormDialogProps) {
     </Dialog>
   );
 }
-

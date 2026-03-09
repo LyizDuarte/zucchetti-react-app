@@ -2,7 +2,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from './ErrorBoundary';
-import { getAppTheme } from '../theme/appTheme';
+import { getAppTheme } from '../../theme/appTheme';
 
 const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 

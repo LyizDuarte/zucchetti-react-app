@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import type { User } from '../types/User';
+import type { User } from '../../types/User';
 
 type DeleteUserDialogProps = {
   open: boolean;
@@ -34,4 +34,3 @@ export function DeleteUserDialog({ open, user, onCancel, onConfirm }: DeleteUser
     </Dialog>
   );
 }
-
