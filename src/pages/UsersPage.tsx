@@ -1,11 +1,31 @@
 import { useMemo, useState } from 'react';
-import { Alert, Button, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from '@mui/material';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import type { User } from '../types/User';
+import { useThemeMode } from '../contexts/ThemeContext';
 import { useUsers } from '../contexts/UsersContext';
 import { UserFormDialog } from '../components/UserFormDialog';
 import { DeleteUserDialog } from '../components/DeleteUserDialog';
 
 export function UsersPage() {
+  const { mode, toggleTheme } = useThemeMode();
   const { users, loading, error, deleteUser, loadUsers } = useUsers();
   const [search, setSearch] = useState('');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -105,9 +125,18 @@ export function UsersPage() {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Painel de Usuários
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+        <Typography variant="h4" component="h1">
+          Painel de Usuários
+        </Typography>
+        <IconButton
+          onClick={toggleTheme}
+          color="inherit"
+          aria-label={mode === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
+        >
+          {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+      </Box>
 
       <Container
         disableGutters
