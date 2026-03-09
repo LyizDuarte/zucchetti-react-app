@@ -1,9 +1,7 @@
+import { UsersPage } from './pages/UsersPage';
+
 function App() {
-  return (
-    <div>
-      <h1>Zucchetti Challenge</h1>
-    </div>
-  )
+  return <UsersPage />
 }
 
 export default App
