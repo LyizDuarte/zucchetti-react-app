@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '../types/User';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import type { User } from '../types/User';
 import { fetchUsersApi } from '../services/usersApi';
 
 type UsersContextValue = {
