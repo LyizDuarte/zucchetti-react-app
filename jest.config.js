@@ -1,16 +1,19 @@
-const { createDefaultPreset } = require("ts-jest");
+import { createDefaultPreset } from 'ts-jest';
 
-const tsJestTransformCfg = createDefaultPreset().transform;
+const tsJestTransformCfg = createDefaultPreset({
+  tsconfig: 'tsconfig.test.json',
+}).transform;
 
-/** @type {import("jest").Config} **/
-export default {
-  preset: "ts-jest",
-  testEnvironment: "jest-environment-jsdom",
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
+const config = {
+  preset: 'ts-jest',
+  testEnvironment: 'jest-environment-jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
   moduleNameMapper: {
-    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
   transform: {
     ...tsJestTransformCfg,
   },
 };
+
+export default config;
