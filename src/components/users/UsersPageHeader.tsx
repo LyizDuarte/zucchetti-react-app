@@ -2,6 +2,7 @@ import { Box, IconButton, Typography } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import type { ThemeMode } from '../../contexts/ThemeContext';
+import zucchettiLogo from '../../assets/logo.png';
 
 type UsersPageHeaderProps = {
   mode: ThemeMode;
@@ -11,9 +12,16 @@ type UsersPageHeaderProps = {
 export function UsersPageHeader({ mode, onToggleTheme }: UsersPageHeaderProps) {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-      <Typography variant="h4" component="h1">
-        Painel de Usuários
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <img
+          src={zucchettiLogo}
+          alt="Zucchetti"
+          style={{ height: 40, objectFit: 'contain' }}
+        />
+        <Typography variant="h4" component="h1">
+          Painel de Usuários
+        </Typography>
+      </Box>
       <IconButton
         onClick={onToggleTheme}
         color="inherit"
