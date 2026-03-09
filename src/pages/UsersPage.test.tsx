@@ -1,6 +1,6 @@
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { UsersProvider } from '../context/UsersContext';
+import { UsersProvider } from '../contexts/UsersContext';
 import { UsersPage } from './UsersPage';
 
 jest.mock('../services/usersApi', () => ({

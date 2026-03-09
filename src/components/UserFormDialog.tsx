@@ -10,23 +10,9 @@ import {
 } from '@mui/material';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import type { User, UserStatus } from '../types/User';
-import { useUsers } from '../context/UsersContext';
-
-type UserFormInputs = {
-  name: string;
-  email: string;
-  status: UserStatus;
-};
-
-const userSchema = yup
-  .object({
-    name: yup.string().required('Nome é obrigatório'),
-    email: yup.string().email('E-mail inválido').required('E-mail é obrigatório'),
-    status: yup.mixed<UserStatus>().oneOf(['active', 'inactive']).required('Status é obrigatório'),
-  })
-  .required();
+import type { User } from '../types/User';
+import { useUsers } from '../contexts/UsersContext';
+import { userFormSchema, type UserFormInputs } from '../schemas/userFormSchema';
 
 type UserFormDialogProps = {
   open: boolean;
@@ -44,7 +30,7 @@ export function UserFormDialog({ open, onClose, user }: UserFormDialogProps) {
     formState: { errors, isSubmitting },
     reset,
   } = useForm<UserFormInputs>({
-    resolver: yupResolver(userSchema),
+    resolver: yupResolver(userFormSchema),
     defaultValues: {
       name: '',
       email: '',

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Alert, Button, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import type { User } from '../types/User';
-import { useUsers } from '../context/UsersContext';
+import { useUsers } from '../contexts/UsersContext';
 import { UserFormDialog } from '../components/UserFormDialog';
 import { DeleteUserDialog } from '../components/DeleteUserDialog';
 

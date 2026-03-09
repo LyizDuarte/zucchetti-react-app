@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { User } from '../types/User';
-import { fetchUsersApi } from '../services/usersApi';
+import { fetchUsersApi } from '../services/users';
 
 type UsersContextValue = {
   users: User[];
