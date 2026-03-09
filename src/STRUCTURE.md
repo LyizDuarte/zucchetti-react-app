@@ -19,6 +19,8 @@ src/
 └── types/            # Tipos e interfaces TypeScript
 ```
 
+As **stories** do Storybook ficam coladas aos componentes: `*.stories.tsx` na mesma pasta do componente (ex.: `components/shared/ErrorBoundary.stories.tsx`).
+
 ## Detalhes
 
 | Pasta | Uso |
