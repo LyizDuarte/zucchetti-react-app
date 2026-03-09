@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
   Alert,
+  Button,
   CircularProgress,
   Container,
   Paper,
@@ -13,12 +14,16 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import type { User } from '../types/User';
 import { useUsers } from '../context/UsersContext';
+import { UserFormDialog } from '../components/UserFormDialog';
 
 export function UsersPage() {
   const { users, loading, error } = useUsers();
   const [search, setSearch] = useState('');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
 
   const filteredAndSortedUsers = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -36,6 +41,20 @@ export function UsersPage() {
       return 0;
     });
   }, [users, search, order]);
+
+  const handleOpenCreate = () => {
+    setEditingUser(null);
+    setIsDialogOpen(true);
+  };
+
+  const handleOpenEdit = (user: User) => {
+    setEditingUser(user);
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
 
   if (loading) {
     return (
@@ -68,6 +87,10 @@ export function UsersPage() {
           flexWrap: 'wrap',
         }}
       >
+        <Button variant="contained" onClick={handleOpenCreate}>
+          Novo usuário
+        </Button>
+
         <TextField
           label="Filtrar por nome"
           variant="outlined"
@@ -97,6 +120,7 @@ export function UsersPage() {
               <TableCell>Nome</TableCell>
               <TableCell>E-mail</TableCell>
               <TableCell>Status</TableCell>
+              <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -105,11 +129,18 @@ export function UsersPage() {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.status}</TableCell>
+                <TableCell align="right">
+                  <Button size="small" onClick={() => handleOpenEdit(user)}>
+                    Editar
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <UserFormDialog open={isDialogOpen} onClose={handleCloseDialog} user={editingUser ?? undefined} />
     </Container>
   );
 }
