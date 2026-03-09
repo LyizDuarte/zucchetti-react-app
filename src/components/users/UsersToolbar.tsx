@@ -29,6 +29,7 @@ export function UsersToolbar({
         Novo usuário
       </Button>
       <TextField
+        id="filter-by-name"
         label="Filtrar por nome"
         variant="outlined"
         size="small"
@@ -36,6 +37,7 @@ export function UsersToolbar({
         onChange={e => onSearchChange(e.target.value)}
       />
       <TextField
+        id="sort-by-name"
         select
         label="Ordenar por nome"
         variant="outlined"

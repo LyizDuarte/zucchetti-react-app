@@ -20,13 +20,15 @@ type UsersTableProps = {
 export function UsersTable({ users, onEdit, onDelete }: UsersTableProps) {
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table aria-label="Lista de usuários">
         <TableHead>
           <TableRow>
-            <TableCell>Nome</TableCell>
-            <TableCell>E-mail</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell align="right">Ações</TableCell>
+            <TableCell scope="col">Nome</TableCell>
+            <TableCell scope="col">E-mail</TableCell>
+            <TableCell scope="col">Status</TableCell>
+            <TableCell scope="col" align="right">
+              Ações
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -45,10 +47,20 @@ export function UsersTable({ users, onEdit, onDelete }: UsersTableProps) {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.status}</TableCell>
                 <TableCell align="right">
-                  <Button size="small" onClick={() => onEdit(user)} sx={{ mr: 1 }}>
+                  <Button
+                    size="small"
+                    onClick={() => onEdit(user)}
+                    sx={{ mr: 1 }}
+                    aria-label={`Editar usuário ${user.name}`}
+                  >
                     Editar
                   </Button>
-                  <Button size="small" color="error" onClick={() => onDelete(user)}>
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={() => onDelete(user)}
+                    aria-label={`Excluir usuário ${user.name}`}
+                  >
                     Excluir
                   </Button>
                 </TableCell>

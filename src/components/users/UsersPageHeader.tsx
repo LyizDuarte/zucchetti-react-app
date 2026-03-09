@@ -18,6 +18,7 @@ export function UsersPageHeader({ mode, onToggleTheme }: UsersPageHeaderProps) {
         onClick={onToggleTheme}
         color="inherit"
         aria-label={mode === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
+        title={mode === 'dark' ? 'Tema claro' : 'Tema escuro'}
       >
         {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
       </IconButton>

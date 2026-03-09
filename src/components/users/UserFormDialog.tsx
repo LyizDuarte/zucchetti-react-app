@@ -63,14 +63,26 @@ export function UserFormDialog({ open, onClose, user }: UserFormDialogProps) {
     onClose();
   };
 
+  const dialogTitleId = 'user-form-dialog-title';
+
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>{isEditMode ? 'Editar usuário' : 'Novo usuário'}</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+      aria-labelledby={dialogTitleId}
+    >
+      <DialogTitle id={dialogTitleId} component="h2">
+        {isEditMode ? 'Editar usuário' : 'Novo usuário'}
+      </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
             label="Nome"
             fullWidth
+            autoFocus
+            inputProps={{ 'aria-required': true, 'aria-invalid': Boolean(errors.name) }}
             {...register('name')}
             error={Boolean(errors.name)}
             helperText={errors.name?.message}
@@ -79,6 +91,7 @@ export function UserFormDialog({ open, onClose, user }: UserFormDialogProps) {
           <TextField
             label="E-mail"
             fullWidth
+            inputProps={{ 'aria-required': true, 'aria-invalid': Boolean(errors.email) }}
             {...register('email')}
             error={Boolean(errors.email)}
             helperText={errors.email?.message}
@@ -89,6 +102,7 @@ export function UserFormDialog({ open, onClose, user }: UserFormDialogProps) {
             select
             fullWidth
             defaultValue="active"
+            SelectProps={{ 'aria-required': true, 'aria-invalid': Boolean(errors.status) }}
             {...register('status')}
             error={Boolean(errors.status)}
             helperText={errors.status?.message}
