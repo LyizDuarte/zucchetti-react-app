@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UsersProvider } from '../contexts/UsersContext';
@@ -10,13 +11,22 @@ jest.mock('../services/users', () => ({
   ]),
 }));
 
+function createWrapper() {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+  return function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <UsersProvider>{children}</UsersProvider>
+      </QueryClientProvider>
+    );
+  };
+}
+
 describe('UsersPage', () => {
   function renderWithProvider() {
-    return render(
-      <UsersProvider>
-        <UsersPage />
-      </UsersProvider>,
-    );
+    return render(<UsersPage />, { wrapper: createWrapper() });
   }
 
   it('renderiza a listagem de usuários', async () => {

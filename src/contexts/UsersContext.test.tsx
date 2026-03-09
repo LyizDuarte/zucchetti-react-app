@@ -1,15 +1,37 @@
-import { renderHook, act } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { UsersProvider, useUsers } from './UsersContext';
+
+jest.mock('../services/users', () => ({
+  fetchUsersApi: jest.fn().mockResolvedValue([]),
+}));
+
+function createWrapper() {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+  return function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <UsersProvider>{children}</UsersProvider>
+      </QueryClientProvider>
+    );
+  };
+}
 
 describe('UsersContext', () => {
   function renderUsersHook() {
     return renderHook(() => useUsers(), {
-      wrapper: ({ children }) => <UsersProvider>{children}</UsersProvider>,
+      wrapper: createWrapper(),
     });
   }
 
   it('adiciona um novo usuário com createUser', async () => {
     const { result } = renderUsersHook();
+
+    await waitFor(() => {
+      expect(result.current.users).toEqual([]);
+    });
 
     await act(async () => {
       await result.current.createUser({
@@ -19,11 +41,17 @@ describe('UsersContext', () => {
       });
     });
 
-    expect(result.current.users.some(u => u.name === 'Novo Usuário')).toBe(true);
+    await waitFor(() => {
+      expect(result.current.users.some(u => u.name === 'Novo Usuário')).toBe(true);
+    });
   });
 
   it('atualiza um usuário com updateUser', async () => {
     const { result } = renderUsersHook();
+
+    await waitFor(() => {
+      expect(result.current.users).toEqual([]);
+    });
 
     await act(async () => {
       await result.current.createUser({
@@ -31,6 +59,10 @@ describe('UsersContext', () => {
         email: 'atualizar@example.com',
         status: 'inactive',
       });
+    });
+
+    await waitFor(() => {
+      expect(result.current.users.some(u => u.name === 'Para Atualizar')).toBe(true);
     });
 
     const createdId: number | undefined = result.current.users.find(
@@ -47,13 +79,19 @@ describe('UsersContext', () => {
       });
     });
 
-    const updated = result.current.users.find(u => u.id === createdId);
-    expect(updated?.name).toBe('Atualizado');
-    expect(updated?.status).toBe('active');
+    await waitFor(() => {
+      const updated = result.current.users.find(u => u.id === createdId);
+      expect(updated?.name).toBe('Atualizado');
+      expect(updated?.status).toBe('active');
+    });
   });
 
   it('remove um usuário com deleteUser', async () => {
     const { result } = renderUsersHook();
+
+    await waitFor(() => {
+      expect(result.current.users).toEqual([]);
+    });
 
     await act(async () => {
       await result.current.createUser({
@@ -61,6 +99,10 @@ describe('UsersContext', () => {
         email: 'deletar@example.com',
         status: 'inactive',
       });
+    });
+
+    await waitFor(() => {
+      expect(result.current.users.some(u => u.name === 'Para Deletar')).toBe(true);
     });
 
     const createdId: number | undefined = result.current.users.find(
@@ -72,7 +114,9 @@ describe('UsersContext', () => {
       await result.current.deleteUser(createdId!);
     });
 
-    expect(result.current.users.find(u => u.id === createdId)).toBeUndefined();
+    await waitFor(() => {
+      expect(result.current.users.find(u => u.id === createdId)).toBeUndefined();
+    });
   });
 });
 
