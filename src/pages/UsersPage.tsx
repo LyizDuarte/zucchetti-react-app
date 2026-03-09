@@ -1,29 +1,18 @@
 import { useMemo, useState } from 'react';
-import {
-  Alert,
-  Button,
-  CircularProgress,
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Alert, Button, CircularProgress, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
 import type { User } from '../types/User';
 import { useUsers } from '../context/UsersContext';
 import { UserFormDialog } from '../components/UserFormDialog';
+import { DeleteUserDialog } from '../components/DeleteUserDialog';
 
 export function UsersPage() {
-  const { users, loading, error } = useUsers();
+  const { users, loading, error, deleteUser } = useUsers();
   const [search, setSearch] = useState('');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
   const filteredAndSortedUsers = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
@@ -54,6 +43,22 @@ export function UsersPage() {
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
+  };
+
+  const handleAskDelete = (user: User) => {
+    setUserToDelete(user);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setIsDeleteDialogOpen(false);
+    setUserToDelete(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!userToDelete) return;
+    await deleteUser(userToDelete.id);
+    handleCloseDeleteDialog();
   };
 
   if (loading) {
@@ -130,8 +135,15 @@ export function UsersPage() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.status}</TableCell>
                 <TableCell align="right">
-                  <Button size="small" onClick={() => handleOpenEdit(user)}>
+                  <Button size="small" onClick={() => handleOpenEdit(user)} sx={{ mr: 1 }}>
                     Editar
+                  </Button>
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={() => handleAskDelete(user)}
+                  >
+                    Excluir
                   </Button>
                 </TableCell>
               </TableRow>
@@ -141,6 +153,13 @@ export function UsersPage() {
       </TableContainer>
 
       <UserFormDialog open={isDialogOpen} onClose={handleCloseDialog} user={editingUser ?? undefined} />
+
+      <DeleteUserDialog
+        open={isDeleteDialogOpen}
+        user={userToDelete}
+        onCancel={handleCloseDeleteDialog}
+        onConfirm={handleConfirmDelete}
+      />
     </Container>
   );
 }
