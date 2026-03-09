@@ -1,7 +1,10 @@
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ThemeProvider } from '../contexts/ThemeContext';
 import { UsersProvider } from '../contexts/UsersContext';
+import { getAppTheme } from '../theme/appTheme';
 import { UsersPage } from './UsersPage';
 
 jest.mock('../services/users', () => ({
@@ -18,7 +21,11 @@ function createWrapper() {
   return function Wrapper({ children }: { children: React.ReactNode }) {
     return (
       <QueryClientProvider client={queryClient}>
-        <UsersProvider>{children}</UsersProvider>
+        <ThemeProvider>
+          <MuiThemeProvider theme={getAppTheme('light')}>
+            <UsersProvider>{children}</UsersProvider>
+          </MuiThemeProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     );
   };
@@ -28,6 +35,26 @@ describe('UsersPage', () => {
   function renderWithProvider() {
     return render(<UsersPage />, { wrapper: createWrapper() });
   }
+
+  it('exibe botão de tema e alterna entre claro e escuro ao clicar', async () => {
+    const user = userEvent.setup();
+    renderWithProvider();
+
+    await waitFor(() => {
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+    });
+
+    const toggleButton = screen.getByRole('button', { name: /ativar tema escuro/i });
+    expect(toggleButton).toBeInTheDocument();
+
+    await user.click(toggleButton);
+
+    expect(screen.getByRole('button', { name: /ativar tema claro/i })).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /ativar tema claro/i }));
+
+    expect(screen.getByRole('button', { name: /ativar tema escuro/i })).toBeInTheDocument();
+  });
 
   it('renderiza a listagem de usuários', async () => {
     renderWithProvider();
