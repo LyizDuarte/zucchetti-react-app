@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { UsersProvider } from '../contexts/UsersContext';
 import { UsersPage } from './UsersPage';
 
-jest.mock('../services/usersApi', () => ({
+jest.mock('../services/users', () => ({
   fetchUsersApi: jest.fn().mockResolvedValue([
     { id: 1, name: 'John Doe', email: 'john@example.com', status: 'active' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'inactive' },
