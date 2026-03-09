@@ -3,6 +3,7 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useThemeMode } from './contexts/ThemeContext';
 import { getAppTheme } from './theme/appTheme';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { UsersPage } from './pages/UsersPage';
 
 function App() {
@@ -12,7 +13,9 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <UsersPage />
+      <ErrorBoundary>
+        <UsersPage />
+      </ErrorBoundary>
     </MuiThemeProvider>
   );
 }
