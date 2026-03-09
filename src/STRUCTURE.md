@@ -7,11 +7,12 @@ Organização das pastas em `src/` para manter o código escalável e fácil de 
 ```
 src/
 ├── components/       # Componentes de UI
-│   ├── shared/       # Genéricos (ErrorBoundary, etc.)
+│   ├── shared/       # Genéricos (ErrorBoundary, PageFallback, etc.)
 │   └── users/        # Componentes da feature "usuários"
 ├── contexts/         # React Context (estado global, tema)
 ├── hooks/            # Hooks reutilizáveis
-├── pages/            # Páginas/rotas da aplicação
+├── pages/            # Páginas da aplicação (uma por rota/tela)
+├── routes/           # Definição de rotas lazy (React.lazy + code-split)
 ├── schemas/          # Schemas de validação (ex.: Yup)
 ├── services/         # Chamadas à API e instância HTTP
 ├── theme/            # Configuração do tema MUI
@@ -27,6 +28,7 @@ src/
 | **contexts** | Providers e hooks de contexto (Theme, Users). |
 | **hooks** | Hooks compartilhados (ex.: useFilteredUsers). |
 | **pages** | Um arquivo por rota/página; orquestra componentes e hooks. |
+| **routes** | Páginas lazy (React.lazy); centraliza code-splitting para manter o App enxuto. |
 | **schemas** | Validação de formulários (Yup, Zod, etc.). |
 | **services** | Cliente HTTP (api.ts) e funções que chamam a API (users.ts). |
 | **theme** | Definição do tema MUI (claro/escuro). |

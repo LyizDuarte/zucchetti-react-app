@@ -1,10 +1,11 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import { useThemeMode } from './contexts/ThemeContext';
 import { getAppTheme } from './theme/appTheme';
 import { ErrorBoundary } from './components/shared/ErrorBoundary';
-import { UsersPage } from './pages/UsersPage';
+import { PageFallback } from './components/shared/PageFallback';
+import { LazyUsersPage } from './routes/lazyPages';
 
 function App() {
   const { mode } = useThemeMode();
@@ -14,7 +15,9 @@ function App() {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <ErrorBoundary>
-        <UsersPage />
+        <Suspense fallback={<PageFallback />}>
+          <LazyUsersPage />
+        </Suspense>
       </ErrorBoundary>
     </MuiThemeProvider>
   );
