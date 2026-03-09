@@ -6,7 +6,7 @@ import { UserFormDialog } from '../components/UserFormDialog';
 import { DeleteUserDialog } from '../components/DeleteUserDialog';
 
 export function UsersPage() {
-  const { users, loading, error, deleteUser } = useUsers();
+  const { users, loading, error, deleteUser, loadUsers } = useUsers();
   const [search, setSearch] = useState('');
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -63,16 +63,42 @@ export function UsersPage() {
 
   if (loading) {
     return (
-      <Container sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
+      <Container
+        sx={{
+          mt: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '50vh',
+          gap: 2,
+        }}
+      >
         <CircularProgress />
+        <Typography variant="body1" color="text.secondary">
+          Carregando usuários...
+        </Typography>
       </Container>
     );
   }
 
   if (error) {
     return (
-      <Container sx={{ mt: 4 }}>
+      <Container
+        sx={{
+          mt: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '50vh',
+          gap: 2,
+        }}
+      >
         <Alert severity="error">{error}</Alert>
+        <Button variant="outlined" onClick={loadUsers}>
+          Tentar novamente
+        </Button>
       </Container>
     );
   }
@@ -129,25 +155,35 @@ export function UsersPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredAndSortedUsers.map(user => (
-              <TableRow key={user.id}>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.status}</TableCell>
-                <TableCell align="right">
-                  <Button size="small" onClick={() => handleOpenEdit(user)} sx={{ mr: 1 }}>
-                    Editar
-                  </Button>
-                  <Button
-                    size="small"
-                    color="error"
-                    onClick={() => handleAskDelete(user)}
-                  >
-                    Excluir
-                  </Button>
+            {filteredAndSortedUsers.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  <Typography variant="body2" color="text.secondary">
+                    Nenhum usuário encontrado.
+                  </Typography>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              filteredAndSortedUsers.map(user => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.status}</TableCell>
+                  <TableCell align="right">
+                    <Button size="small" onClick={() => handleOpenEdit(user)} sx={{ mr: 1 }}>
+                      Editar
+                    </Button>
+                    <Button
+                      size="small"
+                      color="error"
+                      onClick={() => handleAskDelete(user)}
+                    >
+                      Excluir
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
