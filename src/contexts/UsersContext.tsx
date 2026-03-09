@@ -25,7 +25,7 @@ export function UsersProvider({ children }: { children: ReactNode }) {
       const data = await fetchUsersApi();
       setUsers(data);
       setError(null);
-    } catch (e) {
+    } catch {
       setError('Falha ao carregar usuários');
     } finally {
       setLoading(false);

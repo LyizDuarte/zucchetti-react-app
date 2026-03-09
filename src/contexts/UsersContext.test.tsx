@@ -25,8 +25,6 @@ describe('UsersContext', () => {
   it('atualiza um usuário com updateUser', async () => {
     const { result } = renderUsersHook();
 
-    let createdId: number | undefined;
-
     await act(async () => {
       await result.current.createUser({
         name: 'Para Atualizar',
@@ -35,7 +33,9 @@ describe('UsersContext', () => {
       });
     });
 
-    createdId = result.current.users.find(u => u.name === 'Para Atualizar')?.id;
+    const createdId: number | undefined = result.current.users.find(
+      u => u.name === 'Para Atualizar',
+    )?.id;
     expect(createdId).toBeDefined();
 
     await act(async () => {
@@ -55,8 +55,6 @@ describe('UsersContext', () => {
   it('remove um usuário com deleteUser', async () => {
     const { result } = renderUsersHook();
 
-    let createdId: number | undefined;
-
     await act(async () => {
       await result.current.createUser({
         name: 'Para Deletar',
@@ -65,7 +63,9 @@ describe('UsersContext', () => {
       });
     });
 
-    createdId = result.current.users.find(u => u.name === 'Para Deletar')?.id;
+    const createdId: number | undefined = result.current.users.find(
+      u => u.name === 'Para Deletar',
+    )?.id;
     expect(createdId).toBeDefined();
 
     await act(async () => {
